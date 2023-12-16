@@ -19,6 +19,7 @@ class UserPreferencesRepository(
         val TOKEN = stringPreferencesKey("user_token")
         val NAME = stringPreferencesKey("user_name")
         val EMAIL = stringPreferencesKey("user_email")
+        val IS_PENGGUNA = booleanPreferencesKey("user_is_pengguna")
         val IS_ADMIN = booleanPreferencesKey("user_is_admin")
         const val TAG = "UserPreferencesRepo"
     }
@@ -37,7 +38,8 @@ class UserPreferencesRepository(
                 preferences[TOKEN] ?: "",
                 preferences[NAME] ?: "",
                 preferences[EMAIL] ?: "",
-                preferences[IS_ADMIN] ?: false
+                preferences[IS_ADMIN] ?: false,
+                preferences[IS_PENGGUNA] ?: false
             )
         }
 
@@ -64,11 +66,18 @@ class UserPreferencesRepository(
             preferences[IS_ADMIN] = isAdmin
         }
     }
+
+    suspend fun saveIsPengguna(isPengguna: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[IS_PENGGUNA] = isPengguna
+        }
+    }
 }
 
 data class UserState(
     val token: String,
     val name: String,
     val email: String,
-    val isAdmin: Boolean
+    val isAdmin: Boolean,
+    val isPengguna: Boolean
 )
